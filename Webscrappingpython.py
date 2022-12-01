@@ -20,11 +20,11 @@ def extract(page):
     return soup
 objectlist=[]
 def transform(soup):
-    page= soup.find_all('div', class_='athenaProductBlock')
-    for each in page:
-        Title= each.find('h3', class_='athenaProductBlock_productName')
-        try:
-            price = each.find('span',class_='athenaProductBlock_fromValue').get_text().strip()
+    page= soup.find_all('div', class_='athenaProductBlock')# find Xpath for the obejcts 
+    for each in page:# do a cycle in order to retreive all the objects in the page with the Xpath
+        Title= each.find('h3', class_='athenaProductBlock_productName') # in this case Title of the projecy
+        try:# in this case we need to go a try since not all html path is the same
+            price = each.find('span',class_='athenaProductBlock_fromValue').get_text().strip()#get text from the string and delete the tab from the format
         except:
             price='TBA'
         try:
@@ -37,13 +37,13 @@ def transform(soup):
         except:
             star='NP'
        
-        object = {'Title': Title,
+        object = {'Title': Title, # put all the gotten information into one table to be easier to read it
                  'price': price,
                  'saving up to': saving,
                  'star': star}
-        objectlist.append(object)
+        objectlist.append(object) # add the table into the list objectlist
     return
-for i in range(0,4):
+for i in range(0,4):# get all the information from all pages(loading script)
     print(f'Getting page {i}')
     c= extract(i)
     transform(c) 
@@ -52,9 +52,9 @@ for i in range(0,4):
 # In[31]:
 
 
-df = pd.DataFrame(objectlist)
-print(df.head())
-df.to_csv('Suplement.csv')
+df = pd.DataFrame(objectlist)#pandas library give us the chance to format the list into rows and columns to be easier to put into CSV file
+print(df.head())# print the frist 5 lines to see if the content is correct
+df.to_csv('Suplement.csv')# transform and put the data into the CSV file
 
 
 # In[ ]:
